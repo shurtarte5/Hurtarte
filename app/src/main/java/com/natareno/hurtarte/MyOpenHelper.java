@@ -71,6 +71,33 @@ public class MyOpenHelper extends SQLiteOpenHelper {
 
     }
 
+    public ArrayList<User> getFavUsers(){
+
+        ArrayList UserList = new ArrayList<User>();
+        Cursor c = db.rawQuery("select id,name,lastname,mail,favorite from user where favorite = 1",null);
+
+        if(c!=null && c.getCount()>0){
+            c.moveToFirst();
+
+            do{
+                int id=c.getInt(c.getColumnIndex("id"));
+                String name = c.getString(c.getColumnIndex("name"));
+                String lastname = c.getString(c.getColumnIndex("lastname"));
+                String mail = c.getString(c.getColumnIndex("mail"));
+                int favorite= c.getInt(c.getColumnIndex("favorite"));
+                User u = new User(id,name,lastname,mail,favorite);
+                UserList.add(u);
+
+            }while(c.moveToNext());
+
+
+        }
+        c.close();
+        return  UserList;
+
+    }
+
+
     public void deleteUser(int id){
 
      String [] args = new String[]{

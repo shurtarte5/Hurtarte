@@ -43,6 +43,7 @@ public class ListFragment extends Fragment {
 
 
         userList = db.getUsers();
+        //userList = db.getFavUsers();
 
         mRecyclerView = rootView.findViewById(R.id.recycler_allusers);
         mRecyclerView.setHasFixedSize(true);
