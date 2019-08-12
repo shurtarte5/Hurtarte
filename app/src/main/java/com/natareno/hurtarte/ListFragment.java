@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.TouchDelegate;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -74,6 +75,20 @@ public class ListFragment extends Fragment {
                 db.deleteUser(idUser);
                 userList.remove(position);
                 mAdapter.notifyItemRemoved(position);
+
+
+            }
+
+            @Override
+            public void onUpdateSwich(int idUser, int fav) {
+
+
+                //Toast.makeText(getContext(),"es " + para,Toast.LENGTH_LONG).show();
+
+
+                db.modifyUser(idUser,fav);
+
+
 
 
             }

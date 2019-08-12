@@ -14,6 +14,7 @@ public class MyOpenHelper extends SQLiteOpenHelper {
     private static final String DB_NAME ="users.sqlite";
     private static final int DB_VERSION = 1;
     private SQLiteDatabase db;
+    private Context mContext;
 
 
     public MyOpenHelper(Context context) {
@@ -67,6 +68,7 @@ public class MyOpenHelper extends SQLiteOpenHelper {
 
         }
         c.close();
+
         return  UserList;
 
     }
@@ -74,7 +76,7 @@ public class MyOpenHelper extends SQLiteOpenHelper {
     public ArrayList<User> getFavUsers(){
 
         ArrayList UserList = new ArrayList<User>();
-        Cursor c = db.rawQuery("select id,name,lastname,mail,favorite from user where favorite = 1",null);
+        Cursor c = db.rawQuery("select id,name,lastname,mail,favorite from user where favorite = 0",null);
 
         if(c!=null && c.getCount()>0){
             c.moveToFirst();
@@ -98,6 +100,23 @@ public class MyOpenHelper extends SQLiteOpenHelper {
     }
 
 
+    public void modifyUser(int id , int fav){
+
+
+    ContentValues cv= new ContentValues();
+    cv.put("id", id);
+    cv.put("favorite", fav);
+
+
+    db.update("user",cv,"id=?", new String[]{ String.valueOf(id)});
+   // db.close();
+
+
+
+    }
+
+
+
     public void deleteUser(int id){
 
      String [] args = new String[]{
@@ -107,7 +126,7 @@ public class MyOpenHelper extends SQLiteOpenHelper {
 
 
         db.delete("user","id=?",args);
-        //db.close();
+
 
      //getWritableDatabase().delete("user","id="+id,null);
 
@@ -116,6 +135,10 @@ public class MyOpenHelper extends SQLiteOpenHelper {
 
 
     }
+
+
+
+
 
 
 

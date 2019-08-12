@@ -1,5 +1,6 @@
 package com.natareno.hurtarte;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,6 +10,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -17,6 +19,9 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
     private ArrayList<User> mUserList;
 
     private MyOpenHelper db;
+
+
+
 
 
     //Interface para el click del boton de eliminar
@@ -28,6 +33,9 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
         void onItemClick(int position);
 
         void onDeleteClick(int idUser, int position);
+
+        //void onUpdateSwich(int idUser, int fav, int para);
+        void onUpdateSwich(int idUser, int fav);
     }
 
 
@@ -46,6 +54,8 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
         mUserList = userList;
 
 
+
+
     }
 
 
@@ -53,6 +63,8 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
         public TextView iduser, name, lastname, mail;
         public ImageView deleteButton;
         public Switch favorite;
+        public int para;
+
 
 
         public UserViewHolder(@NonNull View itemView, final OnItemClickListener listener) {
@@ -108,6 +120,63 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
             });
 
 
+            favorite.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (listener != null) {
+
+                        int idUser = Integer.parseInt(iduser.getText().toString());
+                        int position = getAdapterPosition();
+
+                        if (idUser != RecyclerView.NO_POSITION) {
+
+                          /*  if(para==1){
+                                favorite.setChecked(true);
+
+                            }*/
+
+
+
+                           if(favorite.isChecked()){
+
+                                listener.onUpdateSwich(idUser,0);
+
+
+
+                            }else{
+                               listener.onUpdateSwich(idUser,1);
+
+                           }
+
+
+
+
+
+                      // listener.onUpdateSwich(idUser,para);
+
+
+
+
+
+
+
+
+
+
+
+
+
+                        }
+
+
+                    }
+
+
+
+                }
+            });
+
+
         }
     }
 
@@ -128,10 +197,29 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
 
         User currentUser = mUserList.get(position);
 
+
+
+
+
+
+
         holder.iduser.setText(Integer.toString(currentUser.getId()));
         holder.name.setText(currentUser.getName());
         holder.lastname.setText(currentUser.getLastName());
         holder.mail.setText(currentUser.getMail());
+        holder.para=currentUser.getFavorite();
+
+        if(holder.para==1){
+            holder.favorite.setChecked(false);
+
+        }else{
+            holder.favorite.setChecked(true);
+
+        }
+
+
+
+
 
 
     }
@@ -140,6 +228,9 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
     public int getItemCount() {
         return mUserList.size();
     }
+
+
+
 
 
 }
